@@ -1,7 +1,7 @@
-h1.APPLICATION OVERVIEW
+#APPLICATION OVERVIEW
 This template provides a jump-start to getting your Brightcove content published on Roku. To begin publishing with this application, you need the following:
 
-h2. I Get your accounts and dev environment ready
+## I Get your accounts and dev environment ready
 
 A. A Brightcove account 
 B. A Roku Developers account
@@ -9,7 +9,7 @@ C. Set up your Roku dev environment so you have a dev box and can communicate wi
    in the Roku guidelines
 
 
-h2. II Getting your content ready
+## II Getting your content ready
 
 A. Create a custom Brightcove player using one of the multi-playlist player templates, and at 
    least one playlist for your Roku content. Each playlist will be a category section in the 
@@ -17,7 +17,7 @@ A. Create a custom Brightcove player using one of the multi-playlist player temp
 B. Make sure each playlist has a thumbnail (304x237 pixels). 
 
 
-h2. III Configure the app
+## III Configure the app
 
 A. Manifest (this is documented in the Roku Component Reference)
 	1. title: this is the name of the app that appears on the channel list
