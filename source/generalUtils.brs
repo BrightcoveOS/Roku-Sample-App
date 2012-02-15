@@ -282,8 +282,6 @@ End Function
 'Replace substrings in a string. Return new string
 '******************************************************
 Function strReplace(basestr As String, oldsub As String, newsub As String) As String
-	r = CreateObject("roRegex", oldsub, "i")
-	return r.ReplaceAll(basestr,newsub)
     newstr = ""
 
     i = 1
@@ -306,9 +304,6 @@ Function strReplace(basestr As String, oldsub As String, newsub As String) As St
     return newstr
 End Function
 
-Function fixSlashes(str as String) As String
-	return strReplace(str, "\\/","/")
-End Function
 
 '******************************************************
 'Get all XML subelements by name
@@ -438,6 +433,8 @@ Sub GetXMLintoAA(xml As Object, aa As Object)
         endif
     next
 End Sub
+
+
 
 
 '******************************************************
@@ -647,7 +644,7 @@ End Sub
 '******************************************************
 'Validate parameter is the correct type
 '******************************************************
-Function validateParam(param As Object, paramType As String, functionName As String, allowInvalid = false) As Boolean
+Function validateParam(param As Object, paramType As String,functionName As String, allowInvalid = false) As Boolean
     if type(param) = paramType then
         return true
     endif
