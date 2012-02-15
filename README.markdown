@@ -24,19 +24,19 @@ B. Make sure each playlist has a thumbnail (304x237 pixels).
 	- subtitle: appears beneath the title on the channel list (optional)
 
 ### B. Config.brs
- 	- appName: this is the name of the application, appearing in the upper right corner of the app
-	- brightcoveToken: your Brightcove API key with read permission and URL access. This can be 
+	1. appName: this is the name of the application, appearing in the upper right corner of the app
+	2. brightcoveToken: your Brightcove API key with read permission and URL access. This can be 
 	   found in Account Settings > API Management on Brightcove.com
-	- playerID: the player ID of the custom player you created in step II.A
-	- alwaysShowCategories: if set to false, the app will not show the playlists screen if there 
+	3. playerID: the player ID of the custom player you created in step II.A
+	4. alwaysShowCategories: if set to false, the app will not show the playlists screen if there 
 	   is only one playlist. It will go straight to the video assets instead.
-	- initTheme settings: controls the look and feel of your application. This is well documented 
+	5. initTheme settings: controls the look and feel of your application. This is well documented 
 	   in the Roku documents
 
 ### C. Replace Images with brand images
-	- Overhang_Background_HD.png (header images that appear at the top of the screen)
- 	- Overhang_Background_SD.png
-	- mm_icon_focus_hd.png
-	- mm_icon_focus_sd.png
-	- mm_icon_side_hd.png
-	- mm_icon_side_sd.png
+	1. Overhang_Background_HD.png (header images that appear at the top of the screen)
+	2. Overhang_Background_SD.png
+	3. mm_icon_focus_hd.png
+	4. mm_icon_focus_sd.png
+	5. mm_icon_side_hd.png
+	6. mm_icon_side_sd.png
