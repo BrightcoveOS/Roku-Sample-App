@@ -11,7 +11,7 @@ function NWM_Utilities()
 		HTMLStripTags:		NWM_UT_HTMLStripTags
 		SimpleJSONParser:	NWM_UT_SimpleJSONParser
 	}
-	
+
 	return this
 end function
 
@@ -30,7 +30,7 @@ function NWM_UT_GetStringFromURL(url, userAgent = "")
 		if type(event) = "roUrlEvent"
 				print ValidStr(event.GetResponseCode())
 				result = event.GetString()
-				'exit while        
+				'exit while
 		elseif event = invalid
 				ut.AsyncCancel()
 				REM reset the connection on timeouts
@@ -40,13 +40,13 @@ function NWM_UT_GetStringFromURL(url, userAgent = "")
 				print "roUrlTransfer::AsyncGetToString(): unknown event"
 		endif
 	end if
-	
+
 	return result
 end function
 
 function NWM_UT_HTMLEntityDecode(inStr)
 	result = inStr
-	
+
 	rx = CreateObject("roRegEx", "&#39;", "")
 	result = rx.ReplaceAll(result, "'")
 
@@ -55,16 +55,16 @@ function NWM_UT_HTMLEntityDecode(inStr)
 
 	rx = CreateObject("roRegEx", "&(quot|rsquo|lsquo);", "")
 	result = rx.ReplaceAll(result, Chr(34))
-	
+
 	rx = CreateObject("roRegEx", "&\w+;", "")
 	result = rx.ReplaceAll(result, Chr(34))
-	
+
 	return result
 end function
 
 function NWM_UT_HTMLStripTags(inStr)
 	result = inStr
-	
+
 	rx = CreateObject("roRegEx", "<.*?>", "")
 	result = rx.ReplaceAll(result, "")
 

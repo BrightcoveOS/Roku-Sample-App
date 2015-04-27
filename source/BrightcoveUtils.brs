@@ -15,7 +15,7 @@ Function GetPlaylistConfig() as Object
 	util = NWM_Utilities()
 	raw = util.GetStringFromURL(configUrl)
 	playlists = util.SimpleJSONParser(raw)
-	
+
 	' At the time of authoring this app, Brightcove does not have multiple thumbnails for playlists, so we'll use the HD and scale down
 	for each list in playlists.items
 		print "List: " ; list.id

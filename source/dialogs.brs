@@ -1,5 +1,5 @@
 '**********************************************************
-'**  TV2Moro Roku Channel - General Dialogs 
+'**  TV2Moro Roku Channel - General Dialogs
 '**  February 2010
 '**  Copyright (c) 2010 KIT Digital Inc. All Rights Reserved.
 '**********************************************************

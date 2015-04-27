@@ -6,14 +6,14 @@ sub ShowHomeScreen(breadLeft, breadRight)
   	screen.SetListDisplayMode("zoom-to-fill")
   	screen.SetBreadcrumbText(breadLeft, breadRight)
 	screen.Show()
-	
+
 	bc = NWM_Brightcove(m.brightcoveToken)
 	content = bc.GetPlaylists(m.playlists, m.thumbs)
 	if content = invalid or content.count() = 0
 		ShowConnectionFailed()
 		return
 	end if
-	
+
 	' let's not show categories if there's only one
 	if content.count() = 1 and Config().alwaysShowPlaylists = false
 		selectedItem = content[0]
@@ -21,10 +21,10 @@ sub ShowHomeScreen(breadLeft, breadRight)
 	else
 		screen.SetContentList(content)
 		screen.Show()
-	
+
 		while true
 			msg = wait(0, screen.GetMessagePort())
-		
+
 			if msg <> invalid
 				if msg.isScreenClosed()
 					exit while

@@ -5,7 +5,7 @@ sub ShowEpisodeScreen(show, leftBread, rightBread)
 	screen.SetListDisplayMode("zoom-to-fill")
   	screen.SetBreadcrumbText(leftBread, rightBread)
 	screen.Show()
-	
+
 	bc = NWM_Brightcove(m.brightcoveToken)
 	content = bc.GetEpisodesForPlaylist(show.playlistID)
 	if content = invalid or content.count() = 0
@@ -18,7 +18,7 @@ sub ShowEpisodeScreen(show, leftBread, rightBread)
 
 	while true
 		msg = wait(0, screen.GetMessagePort())
-		
+
 		if msg <> invalid
 			if msg.isScreenClosed()
 				exit while

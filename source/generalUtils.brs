@@ -1,5 +1,5 @@
 '**********************************************************
-'**  Video Player Example Application - General Utilities 
+'**  Video Player Example Application - General Utilities
 '**  November 2009
 '**  Copyright (c) 2009 Roku Inc. All Rights Reserved.
 '**********************************************************

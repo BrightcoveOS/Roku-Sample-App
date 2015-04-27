@@ -1,18 +1,18 @@
 '**********************************************************
-'**  Video Player Example Application - Video Playback 
+'**  Video Player Example Application - Video Playback
 '**  November 2009
 '**  Copyright (c) 2009 Roku Inc. All Rights Reserved.
 '**********************************************************
 
 '***********************************************************
 '** Create and show the video screen.  The video screen is
-'** a special full screen video playback component.  It 
+'** a special full screen video playback component.  It
 '** handles most of the keypresses automatically and our
-'** job is primarily to make sure it has the correct data 
+'** job is primarily to make sure it has the correct data
 '** at startup. We will receive event back on progress and
 '** error conditions so it's important to monitor these to
 '** understand what's going on, especially in the case of errors
-'***********************************************************  
+'***********************************************************
 Function showVideoScreen(episode As Object)
   if type(episode) <> "roAssociativeArray" then
     print "invalid data passed to showVideoScreen"
@@ -44,9 +44,9 @@ Function showVideoScreen(episode As Object)
         print "Screen closed"
         exit while
       elseif msg.isRequestFailed()
-        print "Video request failure: "; msg.GetIndex(); " " msg.GetData() 
+        print "Video request failure: "; msg.GetIndex(); " " msg.GetData()
       elseif msg.isStatusMessage()
-        print "Video status: "; msg.GetIndex(); " " msg.GetData() 
+        print "Video status: "; msg.GetIndex(); " " msg.GetData()
       elseif msg.isButtonPressed()
         print "Button pressed: "; msg.GetIndex(); " " msg.GetData()
       else

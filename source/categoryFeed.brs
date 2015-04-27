@@ -1,6 +1,6 @@
 '******************************************************
 ' Set up the category feed connection object
-' This feed provides details about top level categories 
+' This feed provides details about top level categories
 '******************************************************
 Function InitCategoryFeedConnection() As Object
 
@@ -53,12 +53,12 @@ Function get_category_names(JSONObj As Object) As Dynamic
 End Function
 
 '*********************************************************
-'** Create an array of content. 
+'** Create an array of content.
 '*********************************************************
 Function get_content_list(JSONObj As Object) As Dynamic
 
     contentList = CreateObject("roArray", 10, true)
-	
+
 	idx = 0
 	for each item in JSONObj.items
 		for each vitem in item.videos
@@ -76,7 +76,7 @@ End Function
 'Parse JSONObj into Roku Object
 '***********************************************************
 Function parseContentItem(vitem As Object, i AS Integer) As dynamic
-	
+
 	o = init_content_item()
 	o.Title = vitem.name
 	o.ShortDescriptionLine1 = vitem.name
@@ -92,7 +92,7 @@ Function parseContentItem(vitem As Object, i AS Integer) As dynamic
 	next
 	'o.Streams.push(renditionList)
 	o.Category = i
-	
+
     return o
 End Function
 
@@ -109,7 +109,7 @@ Function init_content_item() As Object
 		description: invalid,
 		SDPosterUrl: invalid,
 		HDPosterUrl: invalid,
-		
+
 		Streams: [{	url: invalid,
 					encodingRate: invalid
 				}]

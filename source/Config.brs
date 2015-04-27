@@ -15,12 +15,12 @@ Function Config() As Object
 		alwaysShowPlaylists: false
 	}
 	return this
-	
+
 End Function
 
 Sub initTheme()
 
-'' Theme setup, adjust to your needs. 
+'' Theme setup, adjust to your needs.
 
     app = CreateObject("roAppManager")
     theme = CreateObject("roAssociativeArray")
@@ -29,7 +29,7 @@ Sub initTheme()
     theme.OverhangOffsetSD_Y = "31"
     theme.OverhangSliceSD = "pkg:/images/Overhang_Background_SD.png"
 	theme.OverhangSliceHD = "pkg:/images/Overhang_Background_HD.png"
-    
+
 
     theme.OverhangOffsetHD_X = "125"
     theme.OverhangOffsetHD_Y = "35"

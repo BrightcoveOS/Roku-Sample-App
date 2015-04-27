@@ -14,7 +14,7 @@ Function GetVideos() as Object
 			streamFormat: "hls"
 		}
 		Category: 0
-	
+
 	})
 	animals.push({
 		Title: "SeaHorse",
@@ -30,7 +30,7 @@ Function GetVideos() as Object
 			streamFormat: "hls"
 		}
 		Category: 0
-	
+
 	})
 	animals.push({
 		Title: "Bee",
@@ -45,7 +45,7 @@ Function GetVideos() as Object
 			}
 			streamFormat: "hls"
 		}
-		Category: 1	
+		Category: 1
 	})
 	animals.push({
 		Title: "Butterfly",
@@ -60,7 +60,7 @@ Function GetVideos() as Object
 			}
 			streamFormat: "hls"
 		}
-		Category: 1	
+		Category: 1
 	})
 	animals.push({
 		Title: "Common Redpoll",
@@ -75,7 +75,7 @@ Function GetVideos() as Object
 			}
 			streamFormat: "hls"
 		}
-		Category: 2	
+		Category: 2
 	})
 	animals.push({
 		Title: "Magpie",
@@ -90,7 +90,7 @@ Function GetVideos() as Object
 			}
 			streamFormat: "hls"
 		}
-		Category: 2	
+		Category: 2
 	})
 
 	return animals

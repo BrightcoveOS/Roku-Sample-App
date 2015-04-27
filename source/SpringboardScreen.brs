@@ -5,13 +5,13 @@ function ShowSpringboardScreen(episodes, selectedEpisode, leftBread, rightBread)
   	screen.SetStaticRatingEnabled(false)
 	screen.AddButton(1, "Play")
 	screen.Show()
-	
+
 	screen.SetContent(episodes[selectedEpisode])
 	screen.Show()
 
 	while true
 		msg = wait(0, screen.GetMessagePort())
-		
+
 		if msg <> invalid
 			if msg.isScreenClosed()
 				exit while
@@ -36,6 +36,6 @@ function ShowSpringboardScreen(episodes, selectedEpisode, leftBread, rightBread)
 			end if
 		end if
 	end while
-	
+
 	return selectedEpisode
 end function
