@@ -46,12 +46,15 @@ function NWM_BC_GetPlaylists(playlists = [], thumbs = [])
 		'PrintAA(item)
 		
 		if item <> invalid and (playlists.Count() = 0 or playlistFilter.DoesExist(ValidStr(item.id)))
+		
+		transportAgnosticUrl = strReplace(thumbs[item.id], "https", "http")
+	
 			newPlaylist = {
 				playlistID:							ValidStr(item.id)
 				shortDescriptionLine1:	ValidStr(item.name)
 				shortDescriptionLine2:	Left(ValidStr(item.shortdescription), 60)
-				sdPosterURL:						ValidStr(thumbs[item.id])
-				hdPosterURL:						ValidStr(thumbs[item.id])
+				sdPosterURL:						ValidStr(transportAgnosticUrl)
+				hdPosterURL:						ValidStr(transportAgnosticUrl)
 			}
 			
 			if newPlaylist.sdPosterURL = ""
@@ -86,14 +89,16 @@ function NWM_BC_GetEpisodesForPlaylist(playlistID)
 	for each video in json.videos
 		'PrintAA(video)
 		
+		transportAgnosticUrl = strReplace(video.videostillurl, "https", "http")
+		
 		newVid = {
-			id:											ValidStr(video.id)
-			shortDescriptionLine1:	ValidStr(video.name)
+			id:									ValidStr(video.id)
+			shortDescriptionLine1:				ValidStr(video.name)
 			title:								ValidStr(video.name)
 			description:						ValidStr(video.shortdescription)
 			synopsis:							ValidStr(video.shortdescription)
-			sdPosterURL:						ValidStr(video.videostillurl)
-			hdPosterURL:						ValidStr(video.videostillurl)
+			sdPosterURL:						ValidStr(transportAgnosticUrl)
+			hdPosterURL:						ValidStr(transportAgnosticUrl)
 			length:								Int(StrToI(ValidStr(video.length)) / 1000)
 			streams:							[]
 			streamFormat:						"mp4"
