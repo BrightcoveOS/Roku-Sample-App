@@ -17,6 +17,8 @@ To build and install the source, there's a Makefile that should take care of eve
 
 Once complete, you should now see the Roku application running.
 
+You may also want to set the DEVPASSWORD as an environment variable if you have a password set for your account.  This will stop the prompt for a password in "make install".
+
 ### Not working?
 
 If the above doesn't work, and the application is not showing up with 'make install', you can usually see what's going wrong in the Roku console.  Dev channels are able to write messages to a console that you can tail using telnet. Accessing is as simple as:
