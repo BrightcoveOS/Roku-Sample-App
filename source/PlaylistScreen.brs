@@ -11,12 +11,12 @@ sub ShowPlaylistScreen(show, leftBread, rightBread)
   screen.Show()
 
   bc = UseBrightcoveMediaAPI()
-  content = bc.GetEpisodesForPlaylist(show.playlistID)
+  content = bc.GetVideosForPlaylist(show.playlistID)
   if content = invalid or content.count() = 0
     ShowConnectionFailed()
     return
   end if
-  selectedEpisode = 0
+  selectedVideo = 0
   screen.SetContentList(content)
   screen.Show()
 
@@ -27,14 +27,14 @@ sub ShowPlaylistScreen(show, leftBread, rightBread)
       if msg.isScreenClosed()
         exit while
       else if msg.isListItemFocused()
-        selectedEpisode = msg.GetIndex()
+        selectedVideo = msg.GetIndex()
       else if msg.isListItemSelected()
-        selectedEpisode = ShowSpringboardScreen(content, selectedEpisode, leftBread, rightBread)
-        screen.SetFocusedListItem(selectedEpisode)
+        selectedVideo = ShowSpringboardScreen(content, selectedVideo, leftBread, rightBread)
+        screen.SetFocusedListItem(selectedVideo)
         'screen.Show()
       else if msg.isRemoteKeyPressed()
         if msg.GetIndex() = 13
-          ShowBrightcoveVideoScreen(content[selectedEpisode])
+          ShowBrightcoveVideoScreen(content[selectedVideo])
         end if
       end if
     end if

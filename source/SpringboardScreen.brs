@@ -2,7 +2,7 @@
 '' Displays the video details
 ''
 
-function ShowSpringboardScreen(episodes, selectedEpisode, leftBread, rightBread)
+function ShowSpringboardScreen(videos, selectedVideo, leftBread, rightBread)
   screen = CreateObject("roSpringboardScreen")
   screen.SetMessagePort(CreateObject("roMessagePort"))
   screen.SetBreadcrumbText(leftBread, rightBread)
@@ -10,7 +10,7 @@ function ShowSpringboardScreen(episodes, selectedEpisode, leftBread, rightBread)
   screen.AddButton(1, "Play")
   screen.Show()
 
-  screen.SetContent(episodes[selectedEpisode])
+  screen.SetContent(videos[selectedVideo])
   screen.Show()
 
   while true
@@ -20,26 +20,26 @@ function ShowSpringboardScreen(episodes, selectedEpisode, leftBread, rightBread)
       if msg.isScreenClosed()
         exit while
       else if msg.isButtonPressed()
-        ShowBrightcoveVideoScreen(episodes[selectedEpisode])
+        ShowBrightcoveVideoScreen(videos[selectedVideo])
       else if msg.isRemoteKeyPressed()
         if msg.GetIndex() = 4 ' LEFT
-          if selectedEpisode = 0
-            selectedEpisode = episodes.Count() - 1
+          if selectedVideo = 0
+            selectedVideo = videos.Count() - 1
           else
-            selectedEpisode = selectedEpisode - 1
+            selectedVideo = selectedVideo - 1
           end if
-          screen.SetContent(episodes[selectedEpisode])
+          screen.SetContent(videos[selectedVideo])
         else if msg.GetIndex() = 5 ' RIGHT
-          if selectedEpisode = episodes.Count() - 1
-            selectedEpisode = 0
+          if selectedVideo = videos.Count() - 1
+            selectedVideo = 0
           else
-            selectedEpisode = selectedEpisode + 1
+            selectedVideo = selectedVideo + 1
           end if
-          screen.SetContent(episodes[selectedEpisode])
+          screen.SetContent(videos[selectedVideo])
         end if
       end if
     end if
   end while
 
-  return selectedEpisode
+  return selectedVideo
 end function

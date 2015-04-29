@@ -2,10 +2,10 @@
 '' Simple wrapper around roku-sdk/appVideoScreen
 ''
 
-Function ShowBrightcoveVideoScreen(episode As Object)
-  if episode.streams.Count() = 0
-    UseBrightcoveMediaAPI().GetRenditionsForEpisode(episode)
+Function ShowBrightcoveVideoScreen(video As Object)
+  if video.streams.Count() = 0
+    UseBrightcoveMediaAPI().GetRenditionsForVideo(video)
   end if
-  showVideoScreen(episode)
+  showVideoScreen(video)
 End Function
 
