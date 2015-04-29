@@ -1,5 +1,5 @@
 '**********************************************************
-'**  Video Player Example Application - URL Utilities 
+'**  Video Player Example Application - URL Utilities
 '**  November 2009
 '**  Copyright (c) 2009 Roku Inc. All Rights Reserved.
 '**********************************************************
@@ -144,7 +144,7 @@ Function http_get_to_string_with_retry() as String
             event = wait(timeout%, m.Http.GetPort())
             if type(event) = "roUrlEvent"
                 str = event.GetString()
-                exit while        
+                exit while
             elseif event = invalid
                 m.Http.AsyncCancel()
                 REM reset the connection on timeouts
@@ -157,7 +157,7 @@ Function http_get_to_string_with_retry() as String
 
         num_retries% = num_retries% - 1
     end while
-    
+
     return str
 End Function
 
@@ -213,65 +213,3 @@ Function http_post_from_string_with_timeout(val As String, seconds as Integer) a
 
     return str
 End Function
-
-Function NWM_GetStringFromURL(url) as Dynamic
-	result = ""
-	timeout = 10000
-	
-  ut = CreateObject("roURLTransfer")
-  ut.SetPort(CreateObject("roMessagePort"))
-  ut.AddHeader("user-agent", "Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543 Safari/419.3")
-  ut.SetURL(url)
-	if ut.AsyncGetToString()
-		event = wait(timeout, ut.GetPort())
-		if type(event) = "roUrlEvent"
-				print ValidStr(event.GetResponseCode())
-				result = event.GetString()
-				'exit while        
-		elseif event = invalid
-				ut.AsyncCancel()
-				REM reset the connection on timeouts
-				'ut = CreateURLTransferObject(url)
-				'timeout = 2 * timeout
-		else
-				print "roUrlTransfer::AsyncGetToString(): unknown event"
-		endif
-	end if
-	
-	return result
-End Function
-
-function NWM_ResolveRedirect(url)
-	result = url
-	done = false
-	
-	ut = CreateObject("roURLTransfer")
-	ut.SetPort(CreateObject("roMessagePort"))
-  ut.AddHeader("user-agent", "Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543 Safari/419.3")
-	while not done
-		ut.SetURL(result)
-	
-		if ut.AsyncHead()
-			while true
-				msg = wait(10000, ut.GetPort())
-				
-				if msg <> invalid
-					h = msg.GetResponseHeaders()
-					PrintAA(h)
-					if ValidStr(h.location) <> ""
-						result = ValidStr(h.location)
-					else
-						done = true
-					end if
-				else
-					done = true
-				end if
-				exit while
-			end while
-		else 
-			done = true
-		end if
-	end while
-	
-	return result
-end function

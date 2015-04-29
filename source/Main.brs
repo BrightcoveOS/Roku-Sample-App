@@ -1,20 +1,31 @@
-sub Main()
-	initTheme()
-	screenFacade = CreateObject("roPosterScreen")
-	screenFacade.showMessage("Loading...")
-	screenFacade.show()
-	screenFacade.SetBreadcrumbText(Config().appName,"")
-	json = GetPlaylistConfig()
+''
+'' The starting point.  Shows the poster screen, gets playlist data,
+'' and then shows the home screen.
+''
 
-	if json = invalid or type(json.playlists) <> "roArray" or json.playlists.count() = 0
-		ShowConnectionFailed()
-	else
-		printAA(json)
-		m.brightcoveToken = Config().brightcoveToken
-		m.playlists = json.playlists
-		m.thumbs = json.thumbs
-		ShowHomeScreen(Config().appName, "")
-	end if
-	screenFacade.showMessage("")
-	sleep(25)
+sub Main()
+  ' from Config, first initialize any theme settings
+  initTheme()
+
+  ' set the simple loading screen
+  screenFacade = CreateObject("roPosterScreen")
+  screenFacade.showMessage("Loading...")
+  screenFacade.show()
+
+  ' show the title
+  screenFacade.SetBreadcrumbText(Config().appName, "")
+
+  ' get playlist data from Brightcove
+  json = UseBrightcoveMediaAPI().GetPlaylistConfig()
+  if json = invalid or type(json.playlists) <> "roArray" or json.playlists.count() = 0
+    '' From roku-sdk/dialogs
+    ShowConnectionFailed()
+  else
+    ' from rok-sdk/generalUtils
+    PrintAA(json)
+    ' use the data from Brightcove to show the home screen
+    ShowHomeScreen(Config().appName, "", json.playlists, json.thumbs)
+  end if
+  screenFacade.showMessage("")
+  sleep(25)
 end sub

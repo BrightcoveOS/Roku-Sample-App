@@ -24,13 +24,12 @@ Function showVideoScreen(episode As Object)
     screen = CreateObject("roVideoScreen")
     screen.SetMessagePort(port)
 
-    screen.Show()
     screen.SetPositionNotificationPeriod(30)
     screen.SetContent(episode)
     screen.Show()
 
     'Uncomment his line to dump the contents of the episode to be played
-    PrintAA(episode)
+    'PrintAA(episode)
 
     while true
         msg = wait(0, port)
