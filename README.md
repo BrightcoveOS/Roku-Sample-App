@@ -38,9 +38,9 @@ The Roku developers account gives you access to more sample code, in the SDK, an
 
 To add your own content to the sample, you need to do the following:
 
-1. Create a custom Brightcove player using one of the multi-playlist player templates, and at 
+1. Create a custom Brightcove player using one of the multi-playlist player templates, and at
    least one playlist for your Roku content.
-2. Make sure each playlist has a thumbnail (304x237 pixels). 
+2. Make sure each playlist has a thumbnail (304x237 pixels).
 
 ## Configure the app
 
@@ -70,7 +70,7 @@ The app allows you not only to use your own content but to change images, text, 
 
 ## Making more changes ##
 
-A lot more is possible with Roku that this app doesn't do.  Consider this just a starting point for your Roku experience!  If you have changes you've made that you think are generally useful, we'd love to have them in here.  Just open a pull request.  If you are in need of a lot more that isn't provided here, you can always contact Brightcove's [Consulting Services](https://www.brightcove.com/en/services), which has made much more complicated Roku apps for customers.
+A lot more is possible with Roku that this app doesn't do.  Consider this just a starting point for your Roku experience!  If you have changes you've made that you think are generally useful, we'd love to have them in here.  Just open a pull request.  If you are in need of a lot more that isn't provided here, you can always contact Brightcove's [Global Services](https://www.brightcove.com/en/services), which has made much more complicated Roku apps for customers.
 
 ## Credits ##
 
