@@ -46,11 +46,11 @@ To add your own content to the sample, you need to do the following:
 
 The app allows you not only to use your own content but to change images, text, and themes.  Below are the files you can change and what to change in them.
 
-### A. manifest
+#### A. manifest
 	- title: this is the name of the app that appears on the channel list
 	- subtitle: appears beneath the title on the channel list (optional)
 
-### B. source/Config.brs
+#### B. source/Config.brs
 	1. appName: this is the name of the application, appearing in the upper right corner of the app
 	2. brightcoveToken: your Brightcove API key with read permission and URL access. This can be
 	   found in Account Settings > API Management in [VideoCloud](https://videocloud.brightcove.com)
@@ -60,7 +60,10 @@ The app allows you not only to use your own content but to change images, text, 
 	5. initTheme settings: controls the look and feel of your application. This is well documented
 	   in the Roku SDK documents
 
-### C. Replace Images with brand images
+#### C. images/*.png
+
+Replace any of the following sample images with brand images:
+
 	1. Overhang_Background_HD.png (header images that appear at the top of the screen)
 	2. Overhang_Background_SD.png
 	3. mm_icon_focus_hd.png
@@ -79,6 +82,8 @@ As pretty much all Roku apps do, some of the code is from the Roku SDK.  Files t
 Parts of the README were taken from https://github.com/plexinc/roku-client-public
 
 SimpleJSON is thanks to "TheEndless" in the Roku forums.
+
+And most importantly, all of the [contributors you can see in github](https://github.com/BrightcoveOS/Roku-Sample-App/graphs/contributors).  Thank you!
 
 ## License ##
 Copyright (c) 2015 Brightcove Inc.
