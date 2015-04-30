@@ -38,19 +38,19 @@ The Roku developers account gives you access to more sample code, in the SDK, an
 
 To add your own content to the sample, you need to do the following:
 
-1. Create a custom Brightcove player using one of the multi-playlist player templates, and at 
+1. Create a custom Brightcove player using one of the multi-playlist player templates, and at
    least one playlist for your Roku content.
-2. Make sure each playlist has a thumbnail (304x237 pixels). 
+2. Make sure each playlist has a thumbnail (304x237 pixels).
 
 ## Configure the app
 
 The app allows you not only to use your own content but to change images, text, and themes.  Below are the files you can change and what to change in them.
 
-### A. manifest
+#### A. manifest
 	- title: this is the name of the app that appears on the channel list
 	- subtitle: appears beneath the title on the channel list (optional)
 
-### B. source/Config.brs
+#### B. source/Config.brs
 	1. appName: this is the name of the application, appearing in the upper right corner of the app
 	2. brightcoveToken: your Brightcove API key with read permission and URL access. This can be
 	   found in Account Settings > API Management in [VideoCloud](https://videocloud.brightcove.com)
@@ -60,7 +60,10 @@ The app allows you not only to use your own content but to change images, text, 
 	5. initTheme settings: controls the look and feel of your application. This is well documented
 	   in the Roku SDK documents
 
-### C. Replace Images with brand images
+#### C. images/*.png
+
+Replace any of the following sample images with brand images:
+
 	1. Overhang_Background_HD.png (header images that appear at the top of the screen)
 	2. Overhang_Background_SD.png
 	3. mm_icon_focus_hd.png
@@ -70,7 +73,7 @@ The app allows you not only to use your own content but to change images, text, 
 
 ## Making more changes ##
 
-A lot more is possible with Roku that this app doesn't do.  Consider this just a starting point for your Roku experience!  If you have changes you've made that you think are generally useful, we'd love to have them in here.  Just open a pull request.  If you are in need of a lot more that isn't provided here, you can always contact Brightcove's [Consulting Services](https://www.brightcove.com/en/services), which has made much more complicated Roku apps for customers.
+A lot more is possible with Roku that this app doesn't do.  Consider this just a starting point for your Roku experience!  If you have changes you've made that you think are generally useful, we'd love to have them in here.  Just open a pull request.  If you are in need of a lot more that isn't provided here, you can always contact Brightcove's [Global Services](https://www.brightcove.com/en/services), which has made much more complicated Roku apps for customers.
 
 ## Credits ##
 
@@ -79,6 +82,8 @@ As pretty much all Roku apps do, some of the code is from the Roku SDK.  Files t
 Parts of the README were taken from https://github.com/plexinc/roku-client-public
 
 SimpleJSON is thanks to "TheEndless" in the Roku forums.
+
+And most importantly, all of the [contributors you can see in github](https://github.com/BrightcoveOS/Roku-Sample-App/graphs/contributors).  Thank you!
 
 ## License ##
 Copyright (c) 2015 Brightcove Inc.

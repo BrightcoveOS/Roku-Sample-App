@@ -4,11 +4,13 @@
 
 Function Config() As Object
   this = {
+    ' the name to show on top of screens
     appName: "Test Application"
-    ' token MUST be a Brightcove read token with URL access
-    brightcoveToken: "y-3pyd7Twd_EE0ApO83dE8kmk1aGH4gu1QRtXwFn94mrjf65N3etoQ.."
-    ' the player is just used for its attached playlists
-    playerID: "1336822629001"
+    ' media API token, which MUST be a Brightcove read token with URL access
+    brightcoveToken: "1haf2aFRHkf2j4_cfBV3O0EOYDKs-0K1M-nqUT6qM1JY4zNaAvab4w.."
+    ' the player is used for its attached playlists
+    playerID: "4201806590001"
+    ' whether to show the playlist screen, even if there is only one playlist
     alwaysShowPlaylists: false
   }
   return this

@@ -56,25 +56,28 @@ function GetPlaylists(playlists = [], thumbs = [])
   for each item in json.items
     'PrintAA(item)
 
-    if item <> invalid and (playlists.Count() = 0 or playlistFilter.DoesExist(ValidStr(item.id)))
-
-    transportAgnosticUrl = strReplace(thumbs[item.id], "https", "http")
+    if item <> invalid and (playlists.Count() > 0 or playlistFilter.DoesExist(ValidStr(item.id)))
+      print "Adding playlist ";item.id
 
       newPlaylist = {
-        playlistID:              ValidStr(item.id)
+        playlistID:             ValidStr(item.id)
         shortDescriptionLine1:  ValidStr(item.name)
         shortDescriptionLine2:  Left(ValidStr(item.shortdescription), 60)
-        sdPosterURL:            ValidStr(transportAgnosticUrl)
-        hdPosterURL:            ValidStr(transportAgnosticUrl)
       }
 
-      if newPlaylist.sdPosterURL = ""
+      if (thumbs[item.id] <> invalid)
+        transportAgnosticUrl = strReplace(thumbs[item.id], "https", "http")
+        newPlaylist.sdPosterURL = ValidStr(transportAgnosticUrl)
+        newPlaylist.hdPosterURL = ValidStr(transportAgnosticUrl)
+      else
         newPlaylist.sdPosterURL = ValidStr(item.videos[0].videostillurl)
         newPlaylist.hdPosterURL = ValidStr(item.videos[0].videostillurl)
       end if
 
       'PrintAA(newPlaylist)
       result.Push(newPlaylist)
+    else
+      print "Skipping empty playlist ";item.id
     end if
   next
 
@@ -103,17 +106,18 @@ function GetVideosForPlaylist(playlistID)
     transportAgnosticUrl = strReplace(video.videostillurl, "https", "http")
 
     newVid = {
-      id:                  ValidStr(video.id)
-      shortDescriptionLine1:        ValidStr(video.name)
-      title:                ValidStr(video.name)
-      description:            ValidStr(video.shortdescription)
-      synopsis:              ValidStr(video.shortdescription)
-      sdPosterURL:            ValidStr(transportAgnosticUrl)
-      hdPosterURL:            ValidStr(transportAgnosticUrl)
-      length:                Int(StrToI(ValidStr(video.length)) / 1000)
-      streams:              []
+      id:                      ValidStr(video.id)
+      contentId:               ValidStr(video.id)
+      shortDescriptionLine1:   ValidStr(video.name)
+      title:                   ValidStr(video.name)
+      description:             ValidStr(video.shortdescription)
+      synopsis:                ValidStr(video.shortdescription)
+      sdPosterURL:             ValidStr(transportAgnosticUrl)
+      hdPosterURL:             ValidStr(transportAgnosticUrl)
+      length:                  Int(StrToI(ValidStr(video.length)) / 1000)
+      streams:                 []
       streamFormat:            "mp4"
-      contentType:            "episode"
+      contentType:             "episode"
       categories:              []
     }
 
@@ -138,11 +142,11 @@ sub GetRenditionsForVideo(video)
   ' grabbing all the data for the playlist at once can result in a huge chunk of JSON and processing that into a BS structure can crash the box
   ' "http://api.brightcove.com/services/library?command=find_playlist_by_id&media_delivery=http&video_fields=publisheddate,tags,length,name,thumbnailurl,renditions,longdescription&playlist_id=" + playlistID + "&token=" + Config().brightcoveToken
 
-  print ("http://api.brightcove.com/services/library?command=find_video_by_id&media_delivery=http&video_fields=renditions&video_id=" + video.id + "&token=" + Config().brightcoveToken)
-  raw = util.GetStringFromURL("http://api.brightcove.com/services/library?command=find_video_by_id&media_delivery=http&video_fields=renditions&video_id=" + video.id + "&token=" + Config().brightcoveToken)
-  print raw
+  rendURL = "http://api.brightcove.com/services/library?command=find_video_by_id&media_delivery=http&video_fields=renditions&video_id=" + video.id + "&token=" + Config().brightcoveToken
+  print "Rendition URL: "; rendURL
+  raw = util.GetStringFromURL(rendURL)
   json = SimpleJSONParser(raw)
-  PrintAA(json)
+  'PrintAA(json)
 
   if json = invalid then
     return
@@ -150,6 +154,7 @@ sub GetRenditionsForVideo(video)
 
   for each rendition in json.renditions
     if UCase(ValidStr(rendition.videocontainer)) = "MP4" and UCase(ValidStr(rendition.videocodec)) = "H264"
+
       newStream = {
         url:  ValidStr(rendition.url)
         bitrate: Int(StrToI(ValidStr(rendition.encodingrate)) / 1000)
