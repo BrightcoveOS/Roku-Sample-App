@@ -2,7 +2,7 @@
 '' Calls to the Brightcove media API
 ''
 
-function UseBrightcoveMediaAPI()
+function BrightcoveMediaAPI()
   this = {
     GetPlaylistConfig: GetPlaylistConfig
     GetPlaylists: GetPlaylists
@@ -18,8 +18,7 @@ function GetPlaylistConfig() as Object
   out = {
     playlists: [], thumbs: {}
   }
-  util = NWM_Utilities()
-  raw = util.GetStringFromURL(configUrl)
+  raw = GetStringFromURL(configUrl)
   playlists = SimpleJSONParser(raw)
 
   ' Brightcove does not have multiple thumbnails for playlists, so we'll use the HD one and scale down
@@ -33,8 +32,6 @@ End Function
 
 function GetPlaylists(playlists = [], thumbs = [])
   result = []
-  util = NWM_Utilities()
-
   playlistFilter = {}
   lists = ""
   for each playlist in playlists
@@ -44,7 +41,7 @@ function GetPlaylists(playlists = [], thumbs = [])
   lists = Left(lists, Len(lists) - 1 )
   print lists
   ' Can we just grab the correct playlists?
-  raw = util.GetStringFromURL("http://api.brightcove.com/services/library?command=find_playlists_by_ids&playlist_ids="+lists+"&playlist_fields=name,id,thumbnailurl,shortdescription,videos&video_fields=thumbnailurl,longdescription,VIDEOSTILLURL&sort_by=publish_date&sort_order=DESC&get_item_count=true&token=" + Config().brightcoveToken)
+  raw = GetStringFromURL("http://api.brightcove.com/services/library?command=find_playlists_by_ids&playlist_ids="+lists+"&playlist_fields=name,id,thumbnailurl,shortdescription,videos&video_fields=thumbnailurl,longdescription,VIDEOSTILLURL&sort_by=publish_date&sort_order=DESC&get_item_count=true&token=" + Config().brightcoveToken)
 
   ' print "Getting Playlists\n";raw
   json = SimpleJSONParser(raw)
@@ -86,12 +83,11 @@ end function
 
 function GetVideosForPlaylist(playlistID)
   result = []
-  util = NWM_Utilities()
 
   ' grabbing all the data for the playlist at once can result in a huge chunk of JSON and processing that into a BS structure can crash the box
   ' "http://api.brightcove.com/services/library?command=find_playlist_by_id&media_delivery=http&video_fields=publisheddate,tags,length,name,thumbnailurl,renditions,longdescription&playlist_id=" + playlistID + "&token=" + Config().brightcoveToken
 
-  raw = util.GetStringFromURL("http://api.brightcove.com/services/library?command=find_playlist_by_id&media_delivery=http&video_fields=id,publisheddate,tags,length,name,thumbnailurl,shortdescription,videostillurl&playlist_id=" + playlistID + "&token=" + Config().brightcoveToken)
+  raw = GetStringFromURL("http://api.brightcove.com/services/library?command=find_playlist_by_id&media_delivery=http&video_fields=id,publisheddate,tags,length,name,thumbnailurl,shortdescription,videostillurl&playlist_id=" + playlistID + "&token=" + Config().brightcoveToken)
   ' print "Getting Videos";raw
 
   json = SimpleJSONParser(raw)
@@ -137,14 +133,12 @@ function GetVideosForPlaylist(playlistID)
 end function
 
 sub GetRenditionsForVideo(video)
-  util = NWM_Utilities()
-
   ' grabbing all the data for the playlist at once can result in a huge chunk of JSON and processing that into a BS structure can crash the box
   ' "http://api.brightcove.com/services/library?command=find_playlist_by_id&media_delivery=http&video_fields=publisheddate,tags,length,name,thumbnailurl,renditions,longdescription&playlist_id=" + playlistID + "&token=" + Config().brightcoveToken
 
   rendURL = "http://api.brightcove.com/services/library?command=find_video_by_id&media_delivery=http&video_fields=renditions&video_id=" + video.id + "&token=" + Config().brightcoveToken
   print "Rendition URL: "; rendURL
-  raw = util.GetStringFromURL(rendURL)
+  raw = GetStringFromURL(rendURL)
   json = SimpleJSONParser(raw)
   'PrintAA(json)
 

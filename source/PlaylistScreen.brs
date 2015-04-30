@@ -2,7 +2,7 @@
 '' Displays the videos in a playlist
 ''
 
-sub ShowPlaylistScreen(show, leftBread, rightBread)
+sub PlaylistScreen(show, leftBread, rightBread)
   screen = CreateObject("roPosterScreen")
   screen.SetMessagePort(CreateObject("roMessagePort"))
   screen.SetListStyle("flat-category")
@@ -10,7 +10,7 @@ sub ShowPlaylistScreen(show, leftBread, rightBread)
   screen.SetBreadcrumbText(leftBread, rightBread)
   screen.Show()
 
-  bc = UseBrightcoveMediaAPI()
+  bc = BrightcoveMediaAPI()
   content = bc.GetVideosForPlaylist(show.playlistID)
   if content = invalid or content.count() = 0
     ShowConnectionFailed()
@@ -29,12 +29,11 @@ sub ShowPlaylistScreen(show, leftBread, rightBread)
       else if msg.isListItemFocused()
         selectedVideo = msg.GetIndex()
       else if msg.isListItemSelected()
-        selectedVideo = ShowSpringboardScreen(content, selectedVideo, leftBread, rightBread)
+        selectedVideo = SpringboardScreen(content, selectedVideo, leftBread, rightBread)
         screen.SetFocusedListItem(selectedVideo)
-        'screen.Show()
       else if msg.isRemoteKeyPressed()
         if msg.GetIndex() = 13
-          ShowBrightcoveVideoScreen(content[selectedVideo])
+          BrightcoveVideoScreen(content[selectedVideo])
         end if
       end if
     end if
