@@ -16,7 +16,7 @@ sub Main()
   screenFacade.SetBreadcrumbText(Config().appName, "")
 
   ' get playlist data from Brightcove
-  json = UseBrightcoveMediaAPI().GetPlaylistConfig()
+  json = BrightcoveMediaAPI().GetPlaylistConfig()
   if json = invalid or type(json.playlists) <> "roArray" or json.playlists.count() = 0
     '' From roku-sdk/dialogs
     ShowConnectionFailed()
@@ -24,7 +24,7 @@ sub Main()
     ' from rok-sdk/generalUtils
     PrintAA(json)
     ' use the data from Brightcove to show the home screen
-    ShowHomeScreen(Config().appName, "", json.playlists, json.thumbs)
+    HomeScreen(Config().appName, "", json.playlists, json.thumbs)
   end if
   screenFacade.showMessage("")
   sleep(25)

@@ -2,7 +2,7 @@
 '' Displays the video details
 ''
 
-function ShowSpringboardScreen(videos, selectedVideo, leftBread, rightBread)
+function SpringboardScreen(videos, selectedVideo, leftBread, rightBread)
   screen = CreateObject("roSpringboardScreen")
   screen.SetMessagePort(CreateObject("roMessagePort"))
   screen.SetBreadcrumbText(leftBread, rightBread)
@@ -20,7 +20,7 @@ function ShowSpringboardScreen(videos, selectedVideo, leftBread, rightBread)
       if msg.isScreenClosed()
         exit while
       else if msg.isButtonPressed()
-        ShowBrightcoveVideoScreen(videos[selectedVideo])
+        BrightcoveVideoScreen(videos[selectedVideo])
       else if msg.isRemoteKeyPressed()
         if msg.GetIndex() = 4 ' LEFT
           if selectedVideo = 0

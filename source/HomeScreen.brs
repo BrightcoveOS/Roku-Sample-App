@@ -3,7 +3,7 @@
 '' one, shows those videos)
 ''
 
-sub ShowHomeScreen(breadLeft, breadRight, playlists, thumbs)
+sub HomeScreen(breadLeft, breadRight, playlists, thumbs)
   screen = CreateObject("roPosterScreen")
   screen.SetMessagePort(CreateObject("roMessagePort"))
   screen.showMessage("Loading...")
@@ -12,7 +12,7 @@ sub ShowHomeScreen(breadLeft, breadRight, playlists, thumbs)
   screen.SetBreadcrumbText(breadLeft, breadRight)
   screen.Show()
 
-  bc = UseBrightcoveMediaAPI()
+  bc = BrightcoveMediaAPI()
   content = bc.GetPlaylists(playlists, thumbs)
   if content = invalid or content.count() = 0
     '' from roku-sdk/dialogs
@@ -23,7 +23,7 @@ sub ShowHomeScreen(breadLeft, breadRight, playlists, thumbs)
   ' let's not show playlists if there's only one
   if content.count() = 1 and Config().alwaysShowPlaylists = false
     selectedItem = content[0]
-    ShowPlaylistScreen(selectedItem, Config().appName, selectedItem.shortDescriptionLine1)
+    PlaylistScreen(selectedItem, Config().appName, selectedItem.shortDescriptionLine1)
   else
     screen.SetContentList(content)
     screen.Show()
@@ -36,7 +36,7 @@ sub ShowHomeScreen(breadLeft, breadRight, playlists, thumbs)
           exit while
         else if msg.isListItemSelected()
           selectedItem = content[msg.Getindex()]
-          ShowPlaylistScreen(selectedItem, Config().appName, selectedItem.shortDescriptionLine1)
+          PlaylistScreen(selectedItem, Config().appName, selectedItem.shortDescriptionLine1)
         end if
       end if
     end while

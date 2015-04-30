@@ -3,7 +3,7 @@
 ' http://forums.roku.com/viewtopic.php?f=34&t=32208
 '
 
-Function SimpleJSONParser( jsonString As String ) As Object
+Function SimpleJSONParser(jsonString As String) As Object
   q = chr(34)
   beforeKey  = "[,{]"
   keyFiller  = "[^:]*?"
