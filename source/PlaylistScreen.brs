@@ -10,12 +10,19 @@ sub PlaylistScreen(show, leftBread, rightBread)
   screen.SetBreadcrumbText(leftBread, rightBread)
   screen.Show()
 
-  bc = BrightcoveMediaAPI()
-  content = bc.GetVideosForPlaylist(show.playlistID)
-  if content = invalid or content.count() = 0
-    ShowConnectionFailed()
-    return
+  ' get the playlist content if needed
+  bcConfig = Config()
+  if bcConfig.playerURL = invalid
+    bc = BrightcoveMediaAPI()
+    content = bc.GetVideosForPlaylist(show.playlistID)
+    if content = invalid or content.count() = 0
+      ShowConnectionFailed()
+      return
+    end if
+  else
+    content = show.content
   end if
+
   selectedVideo = 0
   screen.SetContentList(content)
   screen.Show()

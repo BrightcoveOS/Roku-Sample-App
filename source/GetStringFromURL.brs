@@ -3,14 +3,20 @@
 ' Modified from NWM_Utilities.brs in the Roku SDK
 '
 
-function GetStringFromURL(url, userAgent = "")
+function GetStringFromURL(url, bcovPolicy = "")
  result = ""
  timeout = 10000
 
   ut = CreateObject("roURLTransfer")
+
+  ' allow for https
+  ut.SetCertificatesFile("common:/certs/ca-bundle.crt")
+  ut.AddHeader("X-Roku-Reserved-Dev-Id", "")
+  ut.InitClientCertificates()
+
   ut.SetPort(CreateObject("roMessagePort"))
-  if userAgent <> ""
-  ut.AddHeader("user-agent", userAgent)
+  if bcovPolicy <> ""
+    ut.AddHeader("BCOV-Policy", bcovPolicy)
   end if
   ut.SetURL(url)
   if ut.AsyncGetToString()
