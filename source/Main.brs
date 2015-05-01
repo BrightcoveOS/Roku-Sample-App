@@ -17,7 +17,7 @@ sub Main()
   screenFacade.SetBreadcrumbText(bcConfig.appName, "")
 
   ' get playlist data from Brightcove
-  if bcConfig.playerURL = invalid
+  if bcConfig.useSmartPlayer
     playlistData = BrightcoveMediaAPI().GetPlaylistConfig()
   else
     playlistData = BrightcovePlayerAPI().GetPlaylistData()

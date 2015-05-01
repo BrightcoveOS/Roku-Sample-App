@@ -35,7 +35,7 @@ function GetPlaylistData()
   ' retrieve config.json
   configData = GetStringFromURL(configURL)
   configJson = ParseJSON(configData)
-  'printAA(configJson)
+  'PrintAA(configJson)
 
   ' all we use is the policy key right now from this data
   policyKey = configJson.video_cloud.policy_key
@@ -45,7 +45,7 @@ function GetPlaylistData()
   playbackUrl = "https://edge.api.brightcove.com/playback/v1/accounts/" + accountId + "/playlists/" + playlistId
   playlistData = GetStringFromURL(playbackUrl, policyKey)
   playlist = ParseJSON(playlistData)
-  'printAA(playlist)
+  'PrintAA(playlist)
 
   ' we only have one playlist, but we follow the format to allow for more playlists
   out = {
@@ -68,6 +68,7 @@ function GetPlaylistData()
   ' add in the video and sources details
   for each video in playlist.videos
     'PrintAA(video)
+
     newVid = {
       id:                      ValidStr(video.id)
       contentId:               ValidStr(video.id)
@@ -77,24 +78,32 @@ function GetPlaylistData()
       synopsis:                ValidStr(video.description)
       sdPosterURL:             ValidStr(video.poster)
       hdPosterURL:             ValidStr(video.poster)
-      length:                  Int(StrToI(ValidStr(video.length)) / 1000)
+      length:                  Int(video.duration / 1000)
+      ' filled in below
       streams:                 []
       streamFormat:            "mp4"
       contentType:             "episode"
+      ' filled in below
       categories:              []
     }
+print "VID"
     date = CreateObject("roDateTime")
-    date.FromISO8601String(video.published_at)
-'    date.FromSeconds(StrToI(Left(ValidStr(video.published_at, Len(ValidStr(video.published_at)) - 3)))
+    ' work around Roku parsing bug
+    tLoc = Instr(1, video.published_at, "T")
+    pubLen = Len(video.published_at)
+    fixedPubAt = Left(video.published_at, tLoc - 1) + " " + Mid(video.published_at, tLoc + 1, pubLen - tLoc - 1)
+    ' this function is bad and should feel bad about it
+    date.FromISO8601String(fixedPubAt)
     newVid.releaseDate = date.asDateStringNoParam()
     for each tag in video.tags
       ' print "Adding Tag ";tag
       newVid.categories.Push(ValidStr(tag))
     next
     for each source in video.sources
-      if UCase(ValidStr(source.container)) = "MP4" and UCase(ValidStr(source.codec)) = "H264" and src <> invalid
+      if UCase(ValidStr(source.container)) = "MP4" and UCase(ValidStr(source.codec)) = "H264" and source.src <> invalid
         newStream = {
           url:  ValidStr(source.src)
+          ' bitrate is unfortunately not available current in the API we are using
         }
 
         if StrToI(ValidStr(source.height)) > 720

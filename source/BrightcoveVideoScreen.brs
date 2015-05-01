@@ -3,7 +3,7 @@
 ''
 
 Function BrightcoveVideoScreen(video As Object)
-  if video.streams.Count() = 0
+  if Config().useSmartPlayer and video.streams.Count() = 0
     BrightcoveMediaAPI().GetRenditionsForVideo(video)
   end if
   showVideoScreen(video)

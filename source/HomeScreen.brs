@@ -14,7 +14,7 @@ sub HomeScreen(breadLeft, breadRight, playlists, thumbs)
 
   ' get the playlist data if needed
   bcConfig = Config()
-  if bcConfig.playerURL = invalid
+  if bcConfig.useSmartPlayer
     bc = BrightcoveMediaAPI()
     content = bc.GetPlaylists(playlists, thumbs)
     if content = invalid or content.count() = 0
