@@ -1,5 +1,6 @@
 ''
-'' Calls to the Brightcove media API
+'' Retrieves playlist and video information that begin with a Smart Player.
+'' If you are using a Brightcove Player instead, see BrightcovePlayerAPI
 ''
 
 function BrightcoveMediaAPI()
@@ -14,7 +15,7 @@ end function
 
 function GetPlaylistConfig() as Object
   configUrl = "http://api.brightcove.com/services/library?command=find_playlists_for_player_id&player_id=" + Config().playerID +"&playlist_fields=id,name,thumbnailURL&token=" + Config().brightcoveToken
-  print "configUrl: " ; configUrl
+  'print "configUrl: " ; configUrl
   out = {
     playlists: [], thumbs: {}
   }
@@ -23,7 +24,7 @@ function GetPlaylistConfig() as Object
 
   ' Brightcove does not have multiple thumbnails for playlists, so we'll use the HD one and scale down
   for each list in playlists.items
-    print "List: " ; list.id
+    'print "List: " ; list.id
     out.playlists.push(list.id)
     out.thumbs[list.id]  = list.thumbnailurl
   next
@@ -39,7 +40,7 @@ function GetPlaylists(playlists = [], thumbs = [])
     lists = lists + playlist + ","
   next
   lists = Left(lists, Len(lists) - 1 )
-  print lists
+  'print lists
   ' Can we just grab the correct playlists?
   raw = GetStringFromURL("http://api.brightcove.com/services/library?command=find_playlists_by_ids&playlist_ids="+lists+"&playlist_fields=name,id,thumbnailurl,shortdescription,videos&video_fields=thumbnailurl,longdescription,VIDEOSTILLURL&sort_by=publish_date&sort_order=DESC&get_item_count=true&token=" + Config().brightcoveToken)
 
@@ -53,7 +54,7 @@ function GetPlaylists(playlists = [], thumbs = [])
   for each item in json.items
     'PrintAA(item)
 
-    if item <> invalid and (playlists.Count() > 0 or playlistFilter.DoesExist(ValidStr(item.id)))
+    if item <> invalid and playlists.Count() > 0 and playlistFilter.DoesExist(ValidStr(item.id))
       print "Adding playlist ";item.id
 
       newPlaylist = {
@@ -85,8 +86,6 @@ function GetVideosForPlaylist(playlistID)
   result = []
 
   ' grabbing all the data for the playlist at once can result in a huge chunk of JSON and processing that into a BS structure can crash the box
-  ' "http://api.brightcove.com/services/library?command=find_playlist_by_id&media_delivery=http&video_fields=publisheddate,tags,length,name,thumbnailurl,renditions,longdescription&playlist_id=" + playlistID + "&token=" + Config().brightcoveToken
-
   raw = GetStringFromURL("http://api.brightcove.com/services/library?command=find_playlist_by_id&media_delivery=http&video_fields=id,publisheddate,tags,length,name,thumbnailurl,shortdescription,videostillurl&playlist_id=" + playlistID + "&token=" + Config().brightcoveToken)
   ' print "Getting Videos";raw
 
@@ -120,7 +119,6 @@ function GetVideosForPlaylist(playlistID)
     date = CreateObject("roDateTime")
     date.FromSeconds(StrToI(Left(ValidStr(video.publisheddate), Len(ValidStr(video.publisheddate)) - 3)))
     newVid.releaseDate = date.asDateStringNoParam()
-    print "New Categories List"
     for each tag in video.tags
       ' print "Adding Tag ";tag
       newVid.categories.Push(ValidStr(tag))
@@ -134,10 +132,8 @@ end function
 
 sub GetRenditionsForVideo(video)
   ' grabbing all the data for the playlist at once can result in a huge chunk of JSON and processing that into a BS structure can crash the box
-  ' "http://api.brightcove.com/services/library?command=find_playlist_by_id&media_delivery=http&video_fields=publisheddate,tags,length,name,thumbnailurl,renditions,longdescription&playlist_id=" + playlistID + "&token=" + Config().brightcoveToken
-
   rendURL = "http://api.brightcove.com/services/library?command=find_video_by_id&media_delivery=http&video_fields=renditions&video_id=" + video.id + "&token=" + Config().brightcoveToken
-  print "Rendition URL: "; rendURL
+  'print "Rendition URL: "; rendURL
   raw = GetStringFromURL(rendURL)
   json = SimpleJSONParser(raw)
   'PrintAA(json)
@@ -147,6 +143,8 @@ sub GetRenditionsForVideo(video)
   end if
 
   for each rendition in json.renditions
+    ' FIXME: allow HLS streams here?  They all may just work, but this still needs to be
+    ' tried out.  RTMP streams would still need to be excluded.
     if UCase(ValidStr(rendition.videocontainer)) = "MP4" and UCase(ValidStr(rendition.videocodec)) = "H264"
 
       newStream = {

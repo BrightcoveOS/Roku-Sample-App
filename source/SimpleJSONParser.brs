@@ -2,6 +2,7 @@
 ' SimpleJSONParser is adapted from code contributed by the Roku developer community:
 ' http://forums.roku.com/viewtopic.php?f=34&t=32208
 '
+' FIXME: use the built-in ParseJSON() in all places instead of this
 
 Function SimpleJSONParser(jsonString As String) As Object
   q = chr(34)

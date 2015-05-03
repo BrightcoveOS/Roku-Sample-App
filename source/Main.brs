@@ -4,8 +4,9 @@
 ''
 
 sub Main()
-  ' from Config, first initialize any theme settings
-  initTheme()
+  ' first initialize any theme settings
+  bcConfig = Config()
+  bcConfig.initTheme()
 
   ' set the simple loading screen
   screenFacade = CreateObject("roPosterScreen")
@@ -13,19 +14,27 @@ sub Main()
   screenFacade.show()
 
   ' show the title
-  screenFacade.SetBreadcrumbText(Config().appName, "")
+  screenFacade.SetBreadcrumbText(bcConfig.appName, "")
 
   ' get playlist data from Brightcove
-  json = BrightcoveMediaAPI().GetPlaylistConfig()
-  if json = invalid or type(json.playlists) <> "roArray" or json.playlists.count() = 0
+  if bcConfig.useSmartPlayer
+    playlistData = BrightcoveMediaAPI().GetPlaylistConfig()
+  else
+    playlistData = BrightcovePlayerAPI().GetPlaylistData()
+  end if
+
+  ' show an error if the initial data call went wrong, which either means Config
+  ' is incorrect or Brightcove is having issues
+  if playlistData = invalid or type(playlistData.playlists) <> "roArray" or playlistData.playlists.count() = 0
     '' From roku-sdk/dialogs
     ShowConnectionFailed()
   else
-    ' from rok-sdk/generalUtils
-    PrintAA(json)
+    print "Found "; playlistData.playlists.count(); " playlists to display"
+    ' PrintAA(playlistData)
     ' use the data from Brightcove to show the home screen
-    HomeScreen(Config().appName, "", json.playlists, json.thumbs)
+    HomeScreen(bcConfig.appName, "", playlistData.playlists, playlistData.thumbs)
   end if
+  ' we are now able to remove the loading message
   screenFacade.showMessage("")
   sleep(25)
 end sub

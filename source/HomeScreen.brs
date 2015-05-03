@@ -12,18 +12,24 @@ sub HomeScreen(breadLeft, breadRight, playlists, thumbs)
   screen.SetBreadcrumbText(breadLeft, breadRight)
   screen.Show()
 
-  bc = BrightcoveMediaAPI()
-  content = bc.GetPlaylists(playlists, thumbs)
-  if content = invalid or content.count() = 0
-    '' from roku-sdk/dialogs
-    ShowConnectionFailed()
-    return
+  ' get the playlist data if needed
+  bcConfig = Config()
+  if bcConfig.useSmartPlayer
+    bc = BrightcoveMediaAPI()
+    content = bc.GetPlaylists(playlists, thumbs)
+    if content = invalid or content.count() = 0
+      '' from roku-sdk/dialogs
+      ShowConnectionFailed()
+      return
+    end if
+  else
+    content = playlists
   end if
 
   ' let's not show playlists if there's only one
-  if content.count() = 1 and Config().alwaysShowPlaylists = false
+  if content.count() = 1 and bcConfig.alwaysShowPlaylists = false
     selectedItem = content[0]
-    PlaylistScreen(selectedItem, Config().appName, selectedItem.shortDescriptionLine1)
+    PlaylistScreen(selectedItem, bcConfig.appName, selectedItem.shortDescriptionLine1)
   else
     screen.SetContentList(content)
     screen.Show()
@@ -36,7 +42,7 @@ sub HomeScreen(breadLeft, breadRight, playlists, thumbs)
           exit while
         else if msg.isListItemSelected()
           selectedItem = content[msg.Getindex()]
-          PlaylistScreen(selectedItem, Config().appName, selectedItem.shortDescriptionLine1)
+          PlaylistScreen(selectedItem, bcConfig.appName, selectedItem.shortDescriptionLine1)
         end if
       end if
     end while

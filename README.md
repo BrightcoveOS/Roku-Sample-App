@@ -32,44 +32,57 @@ To start changing the sample, you should have two accounts:
 1. [A Brightcove VideoCloud account](https://register.brightcove.com/)
 2. [A Roku Developers account](https://developer.roku.com/developer)
 
-The Roku developers account gives you access to more sample code, in the SDK, and helpful forums.  The Brightcove VideoCloud account will be used for storing the playlists and videos in use.
-
-## Getting your content ready
-
-To add your own content to the sample, you need to do the following:
-
-1. Create a custom Brightcove player using one of the multi-playlist player templates, and at
-   least one playlist for your Roku content.
-2. Make sure each playlist has a thumbnail (304x237 pixels).
+The Roku developers account gives you access to the full SDK source, helpful forums, and information on publishing a finished channel.  The Brightcove VideoCloud account will be used for editing the playlists and videos in use.
 
 ## Configure the app
 
-The app allows you not only to use your own content but to change images, text, and themes.  Below are the files you can change and what to change in them.
+You can change a lot in the sample application without changing too much code.  There's ways to change not only the content but also the images, text, and themes.  Below are the files you can change and what to change in them.
 
 #### A. manifest
-	- title: this is the name of the app that appears on the channel list
-	- subtitle: appears beneath the title on the channel list (optional)
+- title: this is the name of the app that appears on the channel list
+- subtitle: appears beneath the title on the channel list (optional)
 
 #### B. source/Config.brs
-	1. appName: this is the name of the application, appearing in the upper right corner of the app
-	2. brightcoveToken: your Brightcove API key with read permission and URL access. This can be
-	   found in Account Settings > API Management in [VideoCloud](https://videocloud.brightcove.com)
-	3. playerID: the player ID of the custom player you created previously when getting content ready
-	4. alwaysShowCategories: if set to false, the app will not show the playlists screen if there
-	   is only one playlist. It will go straight to the video assets instead.
-	5. initTheme settings: controls the look and feel of your application. This is well documented
-	   in the Roku SDK documents
+1. appName: this is the name of the application, appearing in the upper right corner of the app
+2. useSmartPlayer: whether to use a Smart Player or Brightcove Player to retrieve playlist and video information.  Two sections below describe in detail the specific settings you need to then set for the player in use.
+3. alwaysShowPlaylists: if set to false, the app will not show the playlists screen if there is only one playlist. It will go straight to the video assets instead.
+4. initTheme settings: controls the look and feel of your application. This is well documented in the Roku SDK documents
+
+#### C. source/Config.brs for Smart Players
+
+The smart player is most people are using for their players in Brightcove (as of early 2015).  If this is what you are used to using, you can set up one of these players for use with this application:
+
+1. Create a custom smart player using one of the multi-playlist player templates, and at
+   least one playlist for your Roku content.  You can add as many playlists as you'd like
+2. You can use a thumbnail for each playlist (304x237 pixels), or the poster image of the first video in the playlist will be used for the playlist thumbnail.
+
+Once the above is set up, you can set up the player in source/Config.brs using the following settings:
+
+1. brightcoveToken: your Brightcove API key with read permission and URL access. This can be       found in Account Settings > API Management in [VideoCloud](https://videocloud.brightcove.com)
+2. playerID: the player ID of the smart player you created
+
+#### B. source/Config.brs for Brightcove Players
+
+Brightcove players are the new player from Brightcove (as of early 2015).  If you are using these players, you can also set one of them up for use with this application:
+
+1. Create a custom Brightcove player and make sure it is enabled for playlists.  In the media module, find the playlist you would like to use with it.  Copy the URL embed code for use.
+
+Once the above is set up, you can set up the player in source/Config.brs using the following settings:
+
+1. playerURL: the URL as described above which has a playlist associated with it
+
+Currently multiple playlists are not support in the Brightcove Player, and only one playlist is possible using this setup.  There is nearly-completed code in source/BrightcovePlayerAPI.brs to allow for multiple playlists using a config specific for Roku.  If you get this working, please send in a pull request!
 
 #### C. images/*.png
 
 Replace any of the following sample images with brand images:
 
-	1. Overhang_Background_HD.png (header images that appear at the top of the screen)
-	2. Overhang_Background_SD.png
-	3. mm_icon_focus_hd.png
-	4. mm_icon_focus_sd.png
-	5. mm_icon_side_hd.png
-	6. mm_icon_side_sd.png
+1. Overhang_Background_HD.png (header images that appear at the top of the screen)
+2. Overhang_Background_SD.png
+3. mm_icon_focus_hd.png
+4. mm_icon_focus_sd.png
+5. mm_icon_side_hd.png
+6. mm_icon_side_sd.png
 
 ## Making more changes ##
 
