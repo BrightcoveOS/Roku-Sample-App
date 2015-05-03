@@ -2,7 +2,8 @@
 ' Retrieves playlist and video information that begin with a Brightcove Player.
 ' If you are using a Smart Player instead, see BrightcoveMediaAPI
 '
-' FIXME: handle multiple playlists (once the Brightcove Player supports this)
+' FIXME: handle multiple playlists (once the Brightcove Player supports this and/or
+' by handling the FIXME listed below for custom support)
 
 function BrightcovePlayerAPI()
   this = {
@@ -11,7 +12,6 @@ function BrightcovePlayerAPI()
   return this
 end function
 
-' FIXME: break this horribly long function into multiple functions
 function GetPlaylistData()
   playerURL = Config().playerURL
 
@@ -21,12 +21,15 @@ function GetPlaylistData()
   accountId = Mid(playerURL, accountStart, accountEnd - accountStart)
   print "Using account ID "; accountId
 
-  ' find the playlist ID in the URL
-  ' FIXME: allow this to not be there, and then get the playlist data from config.json instead
+  ' find the playlist ID in the URL, if it's there
   playlistStart = Instr(1, playerURL, "playlistId=") + 11
-  playlistId = Mid(playerURL, playlistStart)
+  playlists = []
+  if playlistStart > 11
+    playlists.push(Mid(playerURL, playlistStart))
+  end if
 
-  ' find the config.json URL where we can get more player details
+  ' find the config.json URL where we can get more player details.  This is always
+  ' located at the same folder level where index.html can be found.
   repoEnd = Instr(accountEnd + 1, playerURL, "/")
   shortenedURL = Left(playerURL, repoEnd)
   configURL = shortenedURL + "config.json"
@@ -34,23 +37,49 @@ function GetPlaylistData()
 
   ' retrieve config.json
   configData = GetStringFromURL(configURL)
-  configJson = ParseJSON(configData)
-  'PrintAA(configJson)
+  configJson = SimpleJSONParser(configData)
+  PrintAA(configJson)
 
-  ' all we use is the policy key right now from this data
+  ' get the policy key used for getting more playlist/video info
   policyKey = configJson.video_cloud.policy_key
 
-  ' and now finally, time to get the playlist
-  print 'Getting playlist data for ' ; playlistId
-  playbackUrl = "https://edge.api.brightcove.com/playback/v1/accounts/" + accountId + "/playlists/" + playlistId
-  playlistData = GetStringFromURL(playbackUrl, policyKey)
-  playlist = ParseJSON(playlistData)
-  'PrintAA(playlist)
+  ' FIXME: get playlists stored in config.json working.  Since the Brightcove Player
+  ' does not currently have multiple playlist support, I tried to add a special
+  ' section in the config specific to Roku for this.  The playlists info comes
+  ' through, but the string is in an exponent form that I can't seem to convert
+  ' to a normal string.  Once this works, using the following two commands can
+  ' update a player to use multiple playlists:
+  ' curl -XPATCH --user $EMAIL --data '{ "roku_configuration": { "playlists": [ $PLAYLISTS ] } }' --header 'Content-Type: application/json' "https://players.api.brightcove.com/v1/accounts/$ACCOUNT/players/$PLAYER/configuration"
+   'curl -XPOST --user $EMAIL --header 'Content-Type: application/json' "https://players.api.brightcove.com/v1/accounts/$ACCOUNT/players/$PLAYER/publish"
 
-  ' we only have one playlist, but we follow the format to allow for more playlists
+  ' get the playlists stored in our special section
+  'if configJson.roku_configuration <> invalid
+  '  for each playlist in configJson.roku_configuration.playlists
+  '    playlists.push(Str(playlist))
+  '  next
+  'end if
+
+  ' now we have enough information to start getting the playlist data and converting
+  ' it to the Roku data format
   out = {
     playlists: []
   }
+  for each playlistId in playlists
+    out.playlists.push(GeneratePlaylist(accountId, playlistId, policyKey))
+  next
+
+  return out
+end function
+
+' Generate the needed Roku playlist information for the given account and playlist
+' using the given policyKey to retrieve the needed information from Brightcove
+function GeneratePlaylist(accountId, playlistId, policyKey)
+  print "Getting playlist data for " ; playlistId
+  playbackUrl = "https://edge.api.brightcove.com/playback/v1/accounts/" + accountId + "/playlists/" + playlistId
+print playbackUrl
+  playlistData = GetStringFromURL(playbackUrl, policyKey)
+  playlist = ParseJSON(playlistData)
+  'PrintAA(playlist)
 
   ' construct the playlist details
   rokuPlaylist = {
@@ -86,7 +115,7 @@ function GetPlaylistData()
       ' filled in below
       categories:              []
     }
-print "VID"
+
     date = CreateObject("roDateTime")
     ' work around Roku parsing bug
     tLoc = Instr(1, video.published_at, "T")
@@ -100,10 +129,12 @@ print "VID"
       newVid.categories.Push(ValidStr(tag))
     next
     for each source in video.sources
+      ' FIXME: allow HLS streams here?  They all may just work, but this still needs to be
+      ' tried out.  RTMP streams would still need to be excluded.
       if UCase(ValidStr(source.container)) = "MP4" and UCase(ValidStr(source.codec)) = "H264" and source.src <> invalid
         newStream = {
           url:  ValidStr(source.src)
-          ' bitrate is unfortunately not available current in the API we are using
+          bitrate: Int(StrToI(ValidStr(source.encoding_rate)) / 1000)
         }
 
         if StrToI(ValidStr(source.height)) > 720
@@ -120,6 +151,5 @@ print "VID"
     rokuPlaylist.content.Push(newVid)
   next
 
-  out.playlists.push(rokuPlaylist)
-  return out
+  return rokuPlaylist
 end function

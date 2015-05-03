@@ -143,6 +143,8 @@ sub GetRenditionsForVideo(video)
   end if
 
   for each rendition in json.renditions
+    ' FIXME: allow HLS streams here?  They all may just work, but this still needs to be
+    ' tried out.  RTMP streams would still need to be excluded.
     if UCase(ValidStr(rendition.videocontainer)) = "MP4" and UCase(ValidStr(rendition.videocodec)) = "H264"
 
       newStream = {

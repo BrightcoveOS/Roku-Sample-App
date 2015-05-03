@@ -7,7 +7,7 @@ Function Config() As Object
     ' the name to show on top of screens
     appName: "Test Application"
     ' whether to use the Smart Player or Brightcove player settings below
-    useSmartPlayer: false,
+    useSmartPlayer: true,
     ' whether to show the playlist screen, even if there is only one playlist
     alwaysShowPlaylists: true
 
