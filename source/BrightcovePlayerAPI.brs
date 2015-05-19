@@ -134,7 +134,7 @@ print playbackUrl
       if UCase(ValidStr(source.container)) = "MP4" and UCase(ValidStr(source.codec)) = "H264" and source.src <> invalid
         newStream = {
           url:  ValidStr(source.src)
-          bitrate: Int(StrToI(ValidStr(source.encoding_rate)) / 1000)
+          bitrate: Int(StrToI(ValidStr(source.avg_bitrate)) / 1000)
         }
 
         if StrToI(ValidStr(source.height)) > 720
