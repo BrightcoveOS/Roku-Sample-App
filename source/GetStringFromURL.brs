@@ -4,16 +4,36 @@
 '
 
 function GetStringFromURL(url, bcovPolicy = "")
-  ut = CreateObject("roURLTransfer")
+  result = ""
+  timeout = 10000
 
-  ' allow for https
-  ut.SetCertificatesFile("common:/certs/ca-bundle.crt")
-  ut.AddHeader("X-Roku-Reserved-Dev-Id", "")
-  ut.InitClientCertificates()
-
-  if bcovPolicy <> ""
-    ut.AddHeader("BCOV-Policy", bcovPolicy)
+   ut = CreateObject("roURLTransfer")
+ 
+   ' allow for https
+   ut.SetCertificatesFile("common:/certs/ca-bundle.crt")
+   ut.AddHeader("X-Roku-Reserved-Dev-Id", "")
+   ut.InitClientCertificates()
+ 
+  ut.SetPort(CreateObject("roMessagePort"))
+   if bcovPolicy <> ""
+     ut.AddHeader("BCOV-Policy", bcovPolicy)
+   end if
+   ut.SetURL(url)
+  if ut.AsyncGetToString()
+    event = wait(timeout, ut.GetPort())
+    if type(event) = "roUrlEvent"
+      print ValidStr(event.GetResponseCode())
+      result = event.GetString()
+    elseif event = invalid
+      ut.AsyncCancel()
+      ' reset the connection on timeouts
+      'ut = CreateURLTransferObject(url)
+      'timeout = 2 * timeout
+    else
+      print "roUrlTransfer::AsyncGetToString(): unknown event"
+    endif
   end if
-  ut.SetURL(url)
-  return ur.GetToString()
+
+  return result
+
 end function
