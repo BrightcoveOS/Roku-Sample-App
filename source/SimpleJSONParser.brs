@@ -5,6 +5,7 @@
 ' FIXME: use the built-in ParseJSON() in all places instead of this
 
 Function SimpleJSONParser(jsonString As String) As Object
+  return ParseJSON(jsonString) ' in Case i missed some of replacements;
   q = chr(34)
   beforeKey  = "[,{]"
   keyFiller  = "[^:]*?"

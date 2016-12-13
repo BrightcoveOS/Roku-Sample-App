@@ -4,21 +4,21 @@
 '
 
 function GetStringFromURL(url, bcovPolicy = "")
- result = ""
- timeout = 10000
+  result = ""
+  timeout = 10000
 
-  ut = CreateObject("roURLTransfer")
-
-  ' allow for https
-  ut.SetCertificatesFile("common:/certs/ca-bundle.crt")
-  ut.AddHeader("X-Roku-Reserved-Dev-Id", "")
-  ut.InitClientCertificates()
-
+   ut = CreateObject("roURLTransfer")
+ 
+   ' allow for https
+   ut.SetCertificatesFile("common:/certs/ca-bundle.crt")
+   ut.AddHeader("X-Roku-Reserved-Dev-Id", "")
+   ut.InitClientCertificates()
+ 
   ut.SetPort(CreateObject("roMessagePort"))
-  if bcovPolicy <> ""
-    ut.AddHeader("BCOV-Policy", bcovPolicy)
-  end if
-  ut.SetURL(url)
+   if bcovPolicy <> ""
+     ut.AddHeader("BCOV-Policy", bcovPolicy)
+   end if
+   ut.SetURL(url)
   if ut.AsyncGetToString()
     event = wait(timeout, ut.GetPort())
     if type(event) = "roUrlEvent"
@@ -35,4 +35,5 @@ function GetStringFromURL(url, bcovPolicy = "")
   end if
 
   return result
+
 end function
