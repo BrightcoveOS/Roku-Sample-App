@@ -20,7 +20,7 @@ function GetPlaylistConfig() as Object
     playlists: [], thumbs: {}
   }
   raw = GetStringFromURL(configUrl)
-  playlists = SimpleJSONParser(raw)
+  playlists = ParseJSON(raw)
 
   ' Brightcove does not have multiple thumbnails for playlists, so we'll use the HD one and scale down
   for each list in playlists.items
@@ -45,7 +45,7 @@ function GetPlaylists(playlists = [], thumbs = [])
   raw = GetStringFromURL("http://api.brightcove.com/services/library?command=find_playlists_by_ids&playlist_ids="+lists+"&playlist_fields=name,id,thumbnailurl,shortdescription,videos&video_fields=thumbnailurl,longdescription,VIDEOSTILLURL&sort_by=publish_date&sort_order=DESC&get_item_count=true&token=" + Config().brightcoveToken)
 
   ' print "Getting Playlists\n";raw
-  json = SimpleJSONParser(raw)
+  json = ParseJSON(raw)
 
   if json = invalid then
     return false
@@ -89,7 +89,7 @@ function GetVideosForPlaylist(playlistID)
   raw = GetStringFromURL("http://api.brightcove.com/services/library?command=find_playlist_by_id&media_delivery=http&video_fields=id,publisheddate,tags,length,name,thumbnailurl,shortdescription,videostillurl&playlist_id=" + playlistID + "&token=" + Config().brightcoveToken)
   ' print "Getting Videos";raw
 
-  json = SimpleJSONParser(raw)
+  json = ParseJSON(raw)
 
   if json = invalid then
     return false
@@ -135,7 +135,7 @@ sub GetRenditionsForVideo(video)
   rendURL = "http://api.brightcove.com/services/library?command=find_video_by_id&media_delivery=http&video_fields=renditions&video_id=" + video.id + "&token=" + Config().brightcoveToken
   'print "Rendition URL: "; rendURL
   raw = GetStringFromURL(rendURL)
-  json = SimpleJSONParser(raw)
+  json = ParseJSON(raw)
   'PrintAA(json)
 
   if json = invalid then

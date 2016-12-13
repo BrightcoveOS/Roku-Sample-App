@@ -37,7 +37,7 @@ function GetPlaylistData()
 
   ' retrieve config.json
   configData = GetStringFromURL(configURL)
-  configJson = SimpleJSONParser(configData)
+  configJson = ParseJSON(configData)
   PrintAA(configJson)
 
   ' get the policy key used for getting more playlist/video info
